@@ -1,19 +1,19 @@
 #include "chess.h"
 
-int noeud_valide_diag(T_pile *lap)
+int validNodeDiagonalCheck(T_stack *lap)
 {
-    int valeur;
-	int pileValide=1; //On part du principe qu'elle est valide
+    int value;
+	int validStack=1;
 	int i, j;
 
-	for(i=1;i<=(lap->sommet);i++)
+	for(i=1;i<=(lap->top);i++)
 	{
-		valeur=lap->corps[i];
-		for(j=i+1;j<=(lap->sommet);j++)
+		value=lap->elements[i];
+		for(j=i+1;j<=(lap->top);j++)
 		{
-			if((abs((lap->corps[j])-valeur))==j-i) pileValide=0; //Ce sont deux dames sur la même diagonale !
+			if((abs((lap->elements[j])-value))==j-i) validStack=0;
 		}
 	}
 
-	return pileValide;
+	return validStack;
 }

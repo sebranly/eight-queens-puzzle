@@ -8,149 +8,146 @@ int menu();
 
 int main()
 {
-	T_pile p;
-	p.sommet=0;
+	T_stack p;
+	p.top=0;
 
-	int continuer=1;
-	int compteur=0;
-	int choix;
-	int retour;
+	int keepGoing=1;
+	int counter=0;
+	int choice;
+	int feedback;
 	int element;
-	int nouvelElement;
+	int newElement;
 	int e;
 	int test=1;
 	int i=0, j=0;
-	int affichage;
+	int displayMode;
 
-	char chaine[]="abcdefgh"; //8 au plus. PENSEZ A REDEFINIR LE MAX DE PILE.H POUR D'AUTRES VALEURS
+	char string[]="abcdefgh"; // 8 max. Think about changing the define value in stack.h to update it to a lower value
 
 		do{
-		choix=menu();
-		switch(choix)
+		choice=menu();
+		switch(choice)
 		{
 			case 1:
-			init(&p);
-			printf("\nLa pile est vide (sommet vaut désormais %d !)", p.sommet);
+			initialize(&p);
+			printf("\nThe stack is empty (top is now %d)", p.top);
 			break;
 
 			case 2:
-			retour=pile_pleine(&p);
-			if(retour==1)
-			{printf("\nLa pile est pleine !");}
+			feedback=stackIsFull(&p);
+			if(feedback==1)
+			{printf("\nThe stack is full");}
 			else
-			{printf("\nLa pile est non pleine !");}
+			{printf("\nThe stack is not full");}
 			break;
 
 			case 3:
-			retour=pile_vide(&p);
-			if(retour==1)
-			{printf("\nLa pile est vide !");}
+			feedback=stackIsEmpty(&p);
+			if(feedback==1)
+			{printf("\nThe stack is empty");}
 			else
-			{printf("\nLa pile est non vide !");}
+			{printf("\nThe stack is not empty");}
 			break;
 
 			case 4:
-			afficher(&p);
+			displayStack(&p);
 			break;
 
 			case 5:
-			printf("\nQue voulez-vous empiler comme valeur ? ");
+			printf("\nWhich value do you want to push? ");
 			scanf("%d", &element);
-			retour=empiler(&p, element);
-			if(retour==0)
-			{printf("\nIl est impossible d'empiler l'élément car la pile est pleine !");}
+			feedback=push(&p, element);
+			if(feedback==0)
+			{printf("\nPushing the value is not possible as the stack is full");}
 			else
-			{printf("\nL'élement %d a bien été empilé !", element);}
+			{printf("\nThe element %d got pushed correctly", element);}
 			break;
 
 			case 6:
-			retour=depiler(&p, &nouvelElement);
-			if(retour==0)
-			{printf("\nIl est impossible de dépiler car la pile est vide !");}
+			feedback=pop(&p, &newElement);
+			if(feedback==0)
+			{printf("\nPopping is impossible as the stack is empty");}
 			else
-			{printf("\nL'élement %d a bien été dépilé !", nouvelElement);}
+			{printf("\nThe element %d got popped correctly", newElement);}
 			break;
 
 			case 7:
-			retour=sommet(&p, &nouvelElement);
-			if(retour==0)
-			{printf("\nIl est impossible de consulter car la pile est vide !");}
+			feedback=getTopOfStack(&p, &newElement);
+			if(feedback==0)
+			{printf("\nThe stack is empty so there is no top element to display");}
 			else
-			{printf("\nL'élement %d est la valeur au sommet de la pile !", nouvelElement);}
+			{printf("\nThe element %d is at the top of the stack", newElement);}
 			break;
 
 			case 8:
-			retour=noeud_valide_simple(&p);
-			if(retour==0)
-			{printf("\nIl y a des doublons !");}
+			feedback=validNodeSimpleCheck(&p);
+			if(feedback==0)
+			{printf("\nThere are some duplicate values");}
 			else
-			{printf("\nLa pile ne possède pas de doublon !");}
+			{printf("\nThere is no duplicate values");}
 			break;
 
-			//ELEMENT PRINCIPAL DU PROGRAMME : PERMUTATIONS
+			// PROBLEM 1: PERMUTATIONS
 			case 9:
-            printf("\n\tVoulez vous un affichage ?\n\t\t1 pour OUI\n\t\tN'importe quelle valeur pour NON\n\tChoisissez : ");
-            scanf("%d", &affichage);
-			compteur=0;
-			init(&p);
-			passerAuPremierFils(p);
+            printf("\n\tDo you want to display the combinations?\n\t\t1 if you want to\n\t\tAnother value if you don't want to\n\tYour choice: ");
+            scanf("%d", &displayMode);
+			counter=0;
+			initialize(&p);
+			goToFirstChild(p);
 			do{
 				test=1;
-				while(noeud_valide_simple(&p) && test==1)
+				while(validNodeSimpleCheck(&p) && test==1)
 				{
-					if(noeudTerminal(p))
+					if(nodeIsTerminal(p))
 					{
-						//AFFICHAGE
-						if(affichage==1)
+						if(displayMode==1)
 						{
-						    for(i=1;i<=MAX-1;i++) printf("%c", chaine[p.corps[i]-1]);
+						    for(i=1;i<=MAX-1;i++) printf("%c", string[p.elements[i]-1]);
                             printf("\t");
 						}
-						compteur++;
+						counter++;
 						test=0;
 					}
 					else
 					{
-						passerAuPremierFils(p);
+						goToFirstChild(p);
 					}
 				}
-				while(!rechercheTerminee(p) && (p.corps[p.sommet]==MAX-1))
+				while(!processIsComplete(p) && (p.elements[p.top]==MAX-1))
 				{
-					remonterAuPere(p, e);
+					goToFather(p, e);
 				}
-				if(!rechercheTerminee(p))
+				if(!processIsComplete(p))
 				{
-					passerAuFrereSuivant(p, e);
+					goToNextBrother(p, e);
 				}
-			}while(!rechercheTerminee(p));
-			printf("\n\nIl y a %d possibilités !", compteur);
-			printf("\nRemarque : vous pouvez tester avec de plus grands mots en redéfinissant la constante MAX dans le code !");
+			}while(!processIsComplete(p));
+			printf("\n\nThere are %d combinations", counter);
 			break;
 
-            //RESOLUTION DU PROBLEME DES DAMES
+            // PROBLEM 2: N QUEENS PUZZLE
 			case 10:
-			printf("\n\tVoulez-vous un affichage ?\n\t\t1 pour NOTATION ECHEC\n\t\t2 pour ECHIQUIER 2D\n\t\tN'importe quelle autre valeur pour AUCUN AFFICHAGE\n\tChoisissez : ");
-			scanf("%d", &affichage);
+			printf("\n\tDo you want to display the combinations?\n\t\t1 for a simple chess notation\n\t\t2 for a chessboard display (consumes space)\n\t\tAnother value if you don't want to\n\tYour choice: ");
+			scanf("%d", &displayMode);
 			printf("\n");
-			compteur=0;
-			init(&p);
-			passerAuPremierFils(p);
+			counter=0;
+			initialize(&p);
+			goToFirstChild(p);
 			do{
 				test=1;
-				while(noeud_valide_simple(&p) && noeud_valide_diag(&p) && test==1)
+				while(validNodeSimpleCheck(&p) && validNodeDiagonalCheck(&p) && test==1)
 				{
-					if(noeudTerminal(p))
+					if(nodeIsTerminal(p))
 					{
-						//AFFICHAGE
-						if(affichage==1)
+						if(displayMode==1)
 						{
                             for(i=1;i<=MAX-1;i++)
                             {
-                                printf("%c%d", i-1+'a', p.corps[i]);
+                                printf("%c%d", i-1+'a', p.elements[i]);
                             }
                             printf("\n");
 						}
-						else if(affichage==2)
+						else if(displayMode==2)
 						{
 						    printf("    ");
 						    for(i=1;i<=MAX-1;i++)
@@ -167,7 +164,7 @@ int main()
 
                                 for(i=1;i<=MAX-1;i++)
                                 {
-                                    if(p.corps[i]==j)
+                                    if(p.elements[i]==j)
                                     {printf("| R ");}
                                     else
                                     {printf("| . ");}
@@ -182,37 +179,37 @@ int main()
                             printf("+");
                             printf("\n\n");
 						}
-						compteur++;
+						counter++;
 						test=0;
 					}
 					else
 					{
-						passerAuPremierFils(p);
+						goToFirstChild(p);
 					}
 				}
-				while(!rechercheTerminee(p) && (p.corps[p.sommet]==MAX-1))
+				while(!processIsComplete(p) && (p.elements[p.top]==MAX-1))
 				{
-					remonterAuPere(p, e);
+					goToFather(p, e);
 				}
-				if(!rechercheTerminee(p))
+				if(!processIsComplete(p))
 				{
-					passerAuFrereSuivant(p, e);
+					goToNextBrother(p, e);
 				}
-			}while(!rechercheTerminee(p));
-			printf("\n\nIl y a %d possibilités !", compteur);
+			}while(!processIsComplete(p));
+			printf("\n\nThere are %d combinations", counter);
 			break;
 
 			case 11:
-			printf("\n\nVous avez choisi de quitter !\n\n");
-			continuer=0;
+			printf("\n\nGoodbye\n\n");
+			keepGoing=0;
 			break;
 
 			default:
-			printf("\nChoix impossible !");
+			printf("\nIncorrect choice...");
 			break;
 		}
 
-	}while(continuer);
+	}while(keepGoing);
 
 	return 0;
 
@@ -220,20 +217,20 @@ int main()
 
 int menu()
 {
-	int choix;
+	int choice;
 	printf("\n\n\tMENU :\n\t______");
-	printf("\n\n\t 1-Initialiser la pile");
-	printf("\n\t 2-Tester si la pile est pleine");
-	printf("\n\t 3-Tester si la pile est vide");
-	printf("\n\t 4-Afficher toute la pile");
-	printf("\n\t 5-Empiler un élément");
-	printf("\n\t 6-Dépiler");
-	printf("\n\t 7-Consulter la valeur au sommet");
-	printf("\n\t 8-Vérifier que la pile n'a pas de doublons");
-	printf("\n\t 9-Toutes les combinaisons en permutant %d lettres", MAX-1);
-	printf("\n\t10-Résoudre le problème des dames sur un échiquier");
-	printf("\n\t11-QUITTER");
-	printf("\n\n\tVous sélectionnez : ");
-	scanf("%d", &choix);
-	return choix;
+	printf("\n\n\t 1-Initialize the stack");
+	printf("\n\t 2-Check if the stack is full");
+	printf("\n\t 3-Check if the stack is empty");
+	printf("\n\t 4-Display the whole stack");
+	printf("\n\t 5-Push a number to the stack");
+	printf("\n\t 6-Pop a number from the stack");
+	printf("\n\t 7-Check what is the value at the top");
+	printf("\n\t 8-Check if the stack has duplicate values");
+	printf("\n\t 9-Solve problem 1 about permutations (%d letters)", MAX-1);
+	printf("\n\t10-Solve problem 2 about queens puzzle (%d queens)", MAX-1);
+	printf("\n\t11-Exit");
+	printf("\n\n\tYour choice: ");
+	scanf("%d", &choice);
+	return choice;
 }

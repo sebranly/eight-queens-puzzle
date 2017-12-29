@@ -1,15 +1,15 @@
-#ifndef ANAGRAMMEH
-#define ANAGRAMMEH
+#ifndef ANAGRAMH
+#define ANAGRAMH
 
 #include "stack.h"
 
-#define passerAuPremierFils(p) empiler(&p, 1);
-#define passerAuFrereSuivant(p, e) depiler(&p, &e);\
-				   empiler(&p, e+1);
-#define noeudTerminal(p) pile_pleine(&p)==1
-#define remonterAuPere(p, e) depiler(&p, &e);
-#define rechercheTerminee(p) pile_vide(&p)==1
+#define goToFirstChild(p) push(&p, 1);
+#define goToNextBrother(p, e) pop(&p, &e);\
+				   push(&p, e+1);
+#define nodeIsTerminal(p) stackIsFull(&p)==1
+#define goToFather(p, e) pop(&p, &e);
+#define processIsComplete(p) stackIsEmpty(&p)==1
 
-int noeud_valide_simple(T_pile *);
+int validNodeSimpleCheck(T_stack *);
 
 #endif

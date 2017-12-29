@@ -1,22 +1,22 @@
-#ifndef PILEH
-#define PILEH
+#ifndef STACKH
+#define STACKH
 
-//IMPORTANT : MAX ne doit pas etre mise à plus de 9 car le processus devient long et aussi car la taille d'un échiquier est 8 (9-1)
-#define MAX 9 //MAX-1 éléments empilables (Cette constante sert aux deux problèmes)
+// IMPORTANT: for the eight queens puzzle, MAX should not be greater than 9 because the process would be long, plus a chessboard has a 8x8 size
+#define MAX 9 // MAX-1 elements in the stack (this constant is used for both problems)
 
 typedef int T_Elt;
 
 typedef struct {
-	T_Elt corps[MAX];
-	int sommet;
-}T_pile;
+	T_Elt elements[MAX];
+	int top;
+}T_stack;
 
-void init(T_pile *);
-int pile_pleine(T_pile *);
-int empiler(T_pile *, T_Elt);
-void afficher(T_pile *);
-int pile_vide(T_pile *);
-int depiler(T_pile *, T_Elt *);
-int sommet(T_pile *, T_Elt *);
+void initialize(T_stack *);
+int stackIsFull(T_stack *);
+int push(T_stack *, T_Elt);
+void displayStack(T_stack *);
+int stackIsEmpty(T_stack *);
+int pop(T_stack *, T_Elt *);
+int getTopOfStack(T_stack *, T_Elt *);
 
 #endif

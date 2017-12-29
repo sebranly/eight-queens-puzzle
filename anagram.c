@@ -1,19 +1,19 @@
 #include "anagram.h"
 
-int noeud_valide_simple(T_pile * lap)
+int validNodeSimpleCheck(T_stack * stack)
 {
-	int valeur;
-	int pileValide=1; //On part du principe qu'elle est valide
+	int value;
+	int validStack=1;
 	int i, j;
 
-	for(i=1;i<=(lap->sommet);i++)
+	for(i=1;i<=(stack->top);i++)
 	{
-		valeur=lap->corps[i];
-		for(j=i+1;j<=(lap->sommet);j++)
+		value=stack->elements[i];
+		for(j=i+1;j<=(stack->top);j++)
 		{
-			if(lap->corps[j]==valeur) pileValide=0; //C'est un doublon
+			if(stack->elements[j]==value) validStack=0;
 		}
 	}
 
-	return pileValide;
+	return validStack;
 }

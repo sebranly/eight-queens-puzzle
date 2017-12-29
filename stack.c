@@ -2,72 +2,72 @@
 #include <stdio.h>
 #include "stack.h"
 
-void init(T_pile * lap)
+void initialize(T_stack * stack)
 {
-	lap->sommet=0;
+	stack->top=0;
 }
 
-int pile_pleine(T_pile * lap)
+int stackIsFull(T_stack * stack)
 {
-	if((lap->sommet)==(MAX-1))
+	if((stack->top)==(MAX-1))
 	{return 1;}
 	else
 	{return 0;}
 }
 
-int empiler(T_pile * lap, T_Elt e)
+int push(T_stack * stack, T_Elt e)
 {
-	if(pile_pleine(lap))
+	if(stackIsFull(stack))
 	{return 0;}
 	else
 	{
-		(lap->sommet)++;
-		lap->corps[lap->sommet]=e;
+		(stack->top)++;
+		stack->elements[stack->top]=e;
 		return 1;
 	}
 }
 
-void afficher(T_pile * lap)
+void displayStack(T_stack * stack)
 {
 	int i=0;
-	if(pile_vide(lap))
-	{printf("\nLa pile est vide !");}
+	if(stackIsEmpty(stack))
+	{printf("\nThe stack is empty");}
 	else
 	{
-		printf("\n\nVoici les éléments de la pile :\n");
-		for(i=lap->sommet;i>=1;i--)
-		printf("%d\t", lap->corps[i]);
+		printf("\n\nHere are the elements in the stack:\n");
+		for(i=stack->top;i>=1;i--)
+		printf("%d\t", stack->elements[i]);
 	}
 
 }
 
-int pile_vide(T_pile * lap)
+int stackIsEmpty(T_stack * stack)
 {
-	if((lap->sommet)==(0))
+	if((stack->top)==(0))
 	{return 1;}
 	else
 	{return 0;}
 }
 
-int depiler(T_pile * lap, T_Elt * e)
+int pop(T_stack * stack, T_Elt * e)
 {
-	if(pile_vide(lap))
+	if(stackIsEmpty(stack))
 	{return 0;}
 	else
 	{
-		*e=lap->corps[lap->sommet];
-		(lap->sommet)--;
+		*e=stack->elements[stack->top];
+		(stack->top)--;
 		return 1;
 	}
 }
 
-int sommet(T_pile * lap, T_Elt * e)
+int getTopOfStack(T_stack * stack, T_Elt * e)
 {
-	if(pile_vide(lap))
+	if(stackIsEmpty(stack))
 	{return 0;}
 	else
 	{
-		*e=lap->corps[lap->sommet];
+		*e=stack->elements[stack->top];
 		return 1;
 	}
 }

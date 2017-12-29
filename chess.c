@@ -1,4 +1,4 @@
-#include "echec.h"
+#include "chess.h"
 
 int noeud_valide_diag(T_pile *lap)
 {

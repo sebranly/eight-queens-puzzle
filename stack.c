@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "pile.h"
+#include "stack.h"
 
 void init(T_pile * lap)
 {
@@ -37,8 +37,8 @@ void afficher(T_pile * lap)
 		printf("\n\nVoici les éléments de la pile :\n");
 		for(i=lap->sommet;i>=1;i--)
 		printf("%d\t", lap->corps[i]);
-	}		
-	
+	}
+
 }
 
 int pile_vide(T_pile * lap)

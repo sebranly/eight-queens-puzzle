@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "pile.h"
-#include "anagramme.h"
-#include "echec.h"
+#include "stack.h"
+#include "anagram.h"
+#include "chess.h"
 
 int menu();
 

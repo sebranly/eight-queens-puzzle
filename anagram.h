@@ -1,7 +1,7 @@
 #ifndef ANAGRAMMEH
 #define ANAGRAMMEH
 
-#include "pile.h"
+#include "stack.h"
 
 #define passerAuPremierFils(p) empiler(&p, 1);
 #define passerAuFrereSuivant(p, e) depiler(&p, &e);\
